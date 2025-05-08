@@ -22,6 +22,8 @@ export default {
         tertiary: "#f4c4bd",
         fourth: "#FEE092",
         fifth: "#772035",
+        sixth: "#E5D9AF",
+        seventh: "#5C4033",
       },     
     },
     screens: {

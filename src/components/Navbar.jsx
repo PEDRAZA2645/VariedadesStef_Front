@@ -38,31 +38,34 @@ const Navbar = () => {
   };
 
   return (
-    <div className="w-full flex flex-wrap items-center justify-between p-4 bg-tertiary shadow-md">
+    <div className="w-full flex flex-wrap items-center justify-between p-4 bg-secundary shadow-md">
       <div className="flex-grow">
-        <ol className="flex flex-wrap gap-4 justify-center text-black text-sm md:text-base">
-        <div className="w-25 h-16 rounded-lg overflow-hidden bg-gray-200 flex items-center justify-center">
+        <ol className="flex flex-wrap gap-4 justify-center text-black text-base">
+          <div className="w-25 h-16 rounded-lg overflow-hidden bg-gray-200 flex items-center justify-center">
             <img src={logo} alt="Logo" className="w-full h-full object-cover" />
           </div>
-          <li>
+          {/* Links principales */}
+          <li className="flex items-center">
             <Link to="/">Inicio</Link>
           </li>
-          <li>
+          <li className="flex items-center">
             <Link to="/products">Productos</Link>
           </li>
-          <li>
+          <li className="flex items-center">
             <Link to="/quienes-somos">¿Quiénes somos?</Link>
           </li>
-          <li>
+          <li className="flex items-center">
             <Link to="/contacto">Contáctenos</Link>
           </li>
+          {/* Login */}
           <li className="flex items-center">
-            <img src={login} alt="Login" className="mr-1" />
+            <img src={login} alt="Login" className="mr-1 h-5" />
             <Link to="/login">Login</Link>
           </li>
-          <li className="relative">
+          {/* Carrito */}
+          <li className="relative flex items-center">
             <button onClick={handleCartClick}>
-              <img src={carBuy} alt="Ver carrito" />
+              <img src={carBuy} alt="Ver carrito" className="h-6" />
               {isAuthenticated &&
                 Array.isArray(cartItems) &&
                 cartItems.length > 0 && (

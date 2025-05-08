@@ -75,7 +75,10 @@ const Products = () => {
   };
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div
+      className="flex flex-col items-center w-full"
+      style={{ minHeight: "500px" }} // Altura mínima de 1000px
+    >
       <ToastContainer />
       {loading ? (
         <p className="text-center text-lg">Cargando productos...</p>

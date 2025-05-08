@@ -31,7 +31,12 @@
     .btn-fourth {
         @apply rounded-md bg-fifth text-black 
     }
-
+    .btn-fifth {
+        @apply rounded-md bg-sixth text-black 
+    }
+    .btn-sixth {
+        @apply rounded-md bg-seventh text-white 
+    }
     .input-primary {
         @apply text-primary mb-2 p-1 md:mb-5 w-[193px] h-[43px] md:w-[360px] md:h-[48px] rounded-md
     }

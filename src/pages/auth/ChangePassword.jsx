@@ -70,13 +70,13 @@ const ChangePassword = () => {
     };
 
     return (
-        <div className='container mx-auto mt-5 md:justify-center xl:top-0 md:top-2 sm:top-10 m-8 anyBox'>
+        <div className="flex justify-center items-center h-[400px] bg-gray-100">
             <ToastContainer />
             {message && <p>{message}</p>}
             {!tokenFromQuery ? (
                 <form
                     onSubmit={handleEmailSubmit}
-                    className='container md:w-[518px] md:h-[500px] w-[306px] h-[464px] bg-tertiary shadow-2xl rounded-sm text-sm md:text-xl anyBox flex flex-col justify-center items-center'
+                    className="w-auto max-w-md bg-sixth shadow-2xl rounded-sm p-6"
                 >
                     <h2 className='text-xl mb-2'>Reset Password</h2>
                     <input
@@ -90,7 +90,7 @@ const ChangePassword = () => {
                     />
                     <button
                         type="submit"
-                        className='w-[193px] h-[43px] md:w-[360px] md:h-[48px] btn-fourth'
+                        className='w-[193px] h-[43px] md:w-[360px] md:h-[48px] btn-sixth'
                     >
                         Send Reset Email
                     </button>

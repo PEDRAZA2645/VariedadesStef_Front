@@ -12,6 +12,7 @@ import ChangePassword from "./pages/auth/ChangePassword";
 import Cart from "./pages/cart/Cart";
 import useAuthInitializer from "./hooks/useAuthInitializer";
 import PrivateRoute from './components/routes/PrivateRoute';
+import WhoAreWe from './components/WhoAreWe';
 
 
 function App() {
@@ -23,9 +24,9 @@ function App() {
         {/* Rutas que no requieren autenticación */}
         <Route index element={<Dashboard />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/contactForm" element={<Contact />} />
         <Route path="/productDetails/:id" element={<ProductDetails />} />
         <Route path="/contacto" element={<Contact />} />
+        <Route path="/quienes-somos" element={<WhoAreWe />} />
 
         {/* Rutas que requieren autenticación */}
         <Route element={<PrivateRoute />}>
@@ -43,13 +44,13 @@ function App() {
   );
 
   return (
-    <div className="App h-screen">
+    <div className="App flex flex-col min-h-screen">
       <RouterProvider router={router} />
     </div>
   );
 }
 
-export default App;
+export default App; 
 
 const Root = () => {
   return (
