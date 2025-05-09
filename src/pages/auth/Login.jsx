@@ -13,24 +13,24 @@ const Login = () => {
   return (
     <div>
       <ToastContainer />
-      <div className="flex justify-center items-center h-[400px] bg-gray-100">
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <form
           onSubmit={handleSubmit}
-          className="w-auto max-w-md bg-sixth shadow-2xl rounded-sm p-6"
+          className="w-full max-w-md bg-sixth shadow-2xl rounded-sm p-6"
         >
           <div className="flex flex-col space-y-4">
             <input
               type="email"
               name="email"
               placeholder="Email"
-              className="input-primary w-full h-[48px] px-3"
+              className="w-full h-[48px] px-3"
               required
             />
             <input
               type="password"
               name="password"
               placeholder="Password"
-              className="input-primary w-full h-[48px] px-3"
+              className="w-full h-[48px] px-3"
               required
             />
             <button

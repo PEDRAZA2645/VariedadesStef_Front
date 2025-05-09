@@ -1,6 +1,5 @@
-import { ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useNavigate } from "react-router-dom";
+import "react-toastify/dist/ReactToastify.css";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
@@ -9,28 +8,32 @@ const ChangePassword = () => {
     e.preventDefault();
     navigate("/products");
   };
+
   return (
-    <div className="flex justify-center items-center h-[400px] bg-gray-100">
-      <ToastContainer />
-      <form
-        onSubmit={handleSubmit}
-        className="w-auto max-w-md bg-sixth shadow-2xl rounded-sm p-6"
-      >
-        <h2 className="text-xl mb-2">Reset Password</h2>
-        <input
-          type="email"
-          name="email"
-          placeholder="Enter your email"
-          className="input-primary mb-2"
-          required
-        />
-        <button
-          type="submit"
-          className="w-[193px] h-[43px] md:w-[360px] md:h-[48px] btn-sixth"
+    <div>
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
+        <form
+          onSubmit={handleSubmit}
+          className="w-full max-w-md bg-sixth shadow-2xl rounded-sm p-6"
         >
-          Send Reset Email
-        </button>
-      </form>
+          <h2 className="text-xl mb-4 text-center">Reset Password</h2>
+          <div className="flex flex-col space-y-4">
+            <input
+              type="email"
+              name="email"
+              placeholder="Enter your email"
+              className="w-full h-[48px] px-3"
+              required
+            />
+            <button
+              type="submit"
+              className="w-full h-[48px] btn-sixth text-sm"
+            >
+              Send Reset Email
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

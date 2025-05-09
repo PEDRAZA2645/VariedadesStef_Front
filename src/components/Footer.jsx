@@ -53,7 +53,7 @@ const Footer = () => {
       </div>
       <div className="text-center md:text-left">
         <h1 className="mb-4 uppercase font-bold text-lg">¿Qué quieres hacer?</h1>
-        <Link to="/products" className="btn-fifth mb-4 py-2 px-4 bg-blue-500 text-white rounded-lg">
+        <Link to="/products" className="btn-sixth mb-4 py-2 px-4 bg-blue-500 text-white rounded-lg">
           Comprar...
         </Link>
         <p className="text-sm md:text-base mt-4">

@@ -12,7 +12,7 @@ const Register = () => {
   return (
     <div>
       <ToastContainer />
-      <div className="flex justify-center items-center h-[500px] bg-gray-100">
+      <div className="flex justify-center items-center min-h-screen bg-gray-100">
         <form
           onSubmit={handleSubmit}
           className="w-auto max-w-md bg-sixth shadow-2xl rounded-sm p-6"
@@ -22,42 +22,42 @@ const Register = () => {
               type="text"
               name="userName"
               placeholder="Username"
-              className="input-primary w-full h-[48px] px-3"
+              className="w-full h-[48px] px-3"
               required
             />
             <input
               type="text"
               name="name"
               placeholder="First Name"
-              className="input-primary w-full h-[48px] px-3"
+              className="w-full h-[48px] px-3"
               required
             />
             <input
               type="text"
               name="lastName"
               placeholder="Last Name"
-              className="input-primary w-full h-[48px] px-3"
+              className="w-full h-[48px] px-3"
               required
             />
             <input
               type="email"
               name="email"
               placeholder="Email"
-              className="input-primary w-full h-[48px] px-3"
+              className="w-full h-[48px] px-3"
               required
             />
             <input
               type="password"
               name="newPassword"
               placeholder="Password"
-              className="input-primary w-full h-[48px] px-3"
+              className="w-full h-[48px] px-3"
               required
             />
             <input
               type="password"
               name="confirmPassword"
               placeholder="Confirm Password"
-              className="input-primary w-full h-[48px] px-3"
+              className="w-full h-[48px] px-3"
               required
             />
             <p className="text-red-500" style={{ display: "none" }}>
