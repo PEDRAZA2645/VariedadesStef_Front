@@ -121,7 +121,7 @@ const Cart = () => {
           <h2 className="font-bold text-lg">{`Total: $${totalPrice.toFixed(2)}`}</h2>
           <button
             onClick={handleClearCart}
-            className="btn btn-danger mt-3 p-2 text-sm"
+            className="btn btn-sixth mt-3 p-2 text-sm"
           >
             Vaciar carrito
           </button>
