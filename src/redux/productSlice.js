@@ -1,104 +1,79 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { Global } from '../helpers/Global';
+import { createSlice } from '@reduxjs/toolkit';
+import product1 from '../assets/productsImage/product1.jpg';
+import product2 from '../assets/productsImage/product2.jpg';
+import product3 from '../assets/productsImage/product3.jpg';
+import product4 from '../assets/productsImage/product4.jpg';
+import product5 from '../assets/productsImage/product5.jpg';
+import product6 from '../assets/productsImage/product6.jpg';
+import product7 from '../assets/productsImage/product7.jpg';
+import product8 from '../assets/productsImage/product8.jpg';
+import product9 from '../assets/productsImage/product9.jpg';
 
-// Acción asíncrona para obtener los productos
-export const fetchProducts = createAsyncThunk(
-  'products/fetchProducts',
-  async (page, { rejectWithValue }) => {
-    try {
-      const payload = { page };
-      const base64Payload = btoa(JSON.stringify(payload));
-
-      const response = await fetch(Global.url + 'services/list/all', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: base64Payload,
-      });
-
-      if (!response.ok) {
-        throw new Error('Error en la respuesta de productos principales');
-      }
-
-      const base64Data = await response.text();
-      const jsonString = atob(base64Data);
-      const data = JSON.parse(jsonString);
-
-      const mainProducts = data.data.content || [];
-      const totalPages = data.data.totalPages || 1;
-
-      const productsWithDerivatives = await Promise.all(
-        mainProducts.map(async (product) => {
-          try {
-            const derivativePayload = { id: product.id };
-            const base64DerivativePayload = btoa(JSON.stringify(derivativePayload));
-
-            const derivativeResponse = await fetch(Global.url + 'services/inventory', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: base64DerivativePayload,
-            });
-
-            if (!derivativeResponse.ok) {
-              console.warn(`Error fetching derivatives for product ${product.id}`);
-              return product;
-            }
-
-            const derivativeBase64Data = await derivativeResponse.text();
-            const derivativeJsonString = atob(derivativeBase64Data);
-            const derivativeData = JSON.parse(derivativeJsonString);
-
-            product.derivedProducts = derivativeData.data.inventories || [];
-          } catch (error) {
-            console.warn(`Error fetching derivatives for product ${product.id}:`, error);
-          }
-
-          return product;
-        })
-      );
-
-      return { products: productsWithDerivatives, totalPages };
-    } catch (error) {
-        console.log("Error fetching products",error)
-      return rejectWithValue('Error fetching products');
-    }
-  }
-);
+const simulatedProducts = [
+  {
+    id: 1,
+    name: 'HAIR MASK DE CACAO Y MACADAMIA X 550 ML',
+    imageUrl: product1,
+    salePrice: 26000,
+  },
+  {
+    id: 2,
+    name: 'KERA - SHAMPOO 3 X 650 ML',
+    imageUrl: product2,
+    salePrice: 35500,
+  },
+  {
+    id: 3,
+    name: 'SHIMMER - REPARADOR DE PUNTAS X 600 ML',
+    imageUrl: product3,
+    salePrice: 39000,
+  },
+  {
+    id: 4,
+    name: 'SHIMER - SILITERMO PROTECTOR X 600 ML',
+    imageUrl: product4,
+    salePrice: 250,
+  },
+  {
+    id: 5,
+    name: 'KERA - HIDROKERATINA X 350 ML',
+    imageUrl: product5,
+    salePrice: 36500,
+  },
+  {
+    id: 6,
+    name: 'KERA - SHAMPOO 1 X 650 ML',
+    imageUrl: product6,
+    salePrice: 35500,
+  },
+  {
+    id: 7,
+    name: 'KERA SHAMPOO 2 X 650 ML',
+    imageUrl: product7,
+    salePrice: 35500,
+  },
+  {
+    id: 8,
+    name: 'HAIR MASK DE ALOE ALMENDRAS X 550 ML',
+    imageUrl: product8,
+    salePrice: 26000,
+  },
+  {
+    id: 9,
+    name: 'HAIR MASK DE TRIGO & AVENA X 550',
+    imageUrl: product9,
+    salePrice: 500,
+  },
+];
 
 const productSlice = createSlice({
   name: 'products',
   initialState: {
-    products: [],
-    error: null,
-    currentPage: 1,
-    totalPages: 1,
+    products: simulatedProducts,
     loading: false,
+    error: null,
   },
-  reducers: {
-    setCurrentPage: (state, action) => {
-      state.currentPage = action.payload;
-    },
-  },
-  extraReducers: (builder) => {
-    builder
-      .addCase(fetchProducts.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchProducts.fulfilled, (state, action) => {
-        state.loading = false;
-        state.products = action.payload.products;
-        state.totalPages = action.payload.totalPages;
-      })
-      .addCase(fetchProducts.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      });
-  },
+  reducers: {},
 });
 
-export const { setCurrentPage } = productSlice.actions;
 export default productSlice.reducer;

@@ -15,15 +15,13 @@ const useContact = () => {
   };
 
   const handleRegister = async (data) => {
-    // Lógica para enviar los datos al servidor
-    console.log(data); // Solo para verificar
+    console.log(data);
   };
 
   return {
     formData,
     handleInputChange,
     handleRegister,
-    // Otros datos y funciones que necesites
   };
 };
 

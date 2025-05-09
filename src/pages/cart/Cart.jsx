@@ -1,163 +1,132 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import useCart from '../../hooks/useCart';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { fetchProducts } from '../../redux/productSlice';
-
-const ITEMS_PER_PAGE = 10;
+import useCart from "../../hooks/useCart";
 
 const Cart = () => {
-  const dispatch = useDispatch();
-  const { cartItems, error, validateCart, updateItemQuantity } = useCart();
-  const { products } = useSelector((state) => state.products);
+  const {
+    cartItems,
+    removeFromCart,
+    clearCart,
+    incrementQuantity,
+    decrementQuantity,
+  } = useCart();
 
-  const [loading, setLoading] = useState(false);
-  const [quantityMap, setQuantityMap] = useState({});
-  const [removedItems, setRemovedItems] = useState(new Set());
-  const [isCartEmpty, setIsCartEmpty] = useState(true);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  useEffect(() => {
-    if (products.length === 0) {
-      dispatch(fetchProducts(currentPage));
-    }
-  }, [dispatch, products.length, currentPage]);
-
-  useEffect(() => {
-    const fetchCartItems = async () => {
-      setLoading(true);
-      await validateCart(currentPage);
-      setLoading(false);
-    };
-
-    fetchCartItems();
-  }, [currentPage]);
-
-  useEffect(() => {
-    const itemsArray = cartItems.content || [];
-    setIsCartEmpty(itemsArray.length === 0);
-    const initialQuantityMap = {};
-    itemsArray.forEach(item => {
-      initialQuantityMap[item.productId] = item.quantity;
-    });
-    setQuantityMap(initialQuantityMap);
-  }, [cartItems]);
-
-  const inventoryMap = products.reduce((map, product) => {
-    product.derivedProducts.forEach(derived => {
-      map[derived.id] = product.imageUrl;
-    });
-    return map;
-  }, {});
-
-  const handleQuantityChange = (item, newQuantity) => {
-    if (newQuantity <= 0) {
-      updateItemQuantity({ ...item, quantity: 0 });
-      setQuantityMap(prevMap => {
-        const newMap = { ...prevMap };
-        delete newMap[item.productId];
-        setRemovedItems(prevRemoved => new Set(prevRemoved.add(item.productId)));
-        if (Object.keys(newMap).length === 0) setIsCartEmpty(true);
-        return newMap;
-      });
-    } else {
-      setQuantityMap(prevMap => ({
-        ...prevMap,
-        [item.productId]: newQuantity
-      }));
-      updateItemQuantity({ ...item, quantity: newQuantity });
-    }
+  const handleRemoveItem = (productId) => {
+    removeFromCart(productId);
   };
 
-  const handleRemoveItem = (item) => {
-    updateItemQuantity({ ...item, quantity: 0 });
-    setQuantityMap(prevMap => {
-      const newMap = { ...prevMap };
-      delete newMap[item.productId];
-      setRemovedItems(prevRemoved => new Set(prevRemoved.add(item.productId)));
-      if (Object.keys(newMap).length === 0) setIsCartEmpty(true);
-      return newMap;
-    });
+  const handleClearCart = () => {
+    clearCart();
   };
 
-  const totalPages = Math.ceil(cartItems.totalElements / ITEMS_PER_PAGE);
-
-  const handlePageChange = (newPage) => {
-    setCurrentPage(newPage);
+  const handleIncrement = (productId) => {
+    incrementQuantity(productId);
   };
+
+  const handleDecrement = (productId) => {
+    decrementQuantity(productId);
+  };
+
+  const totalPrice = cartItems.reduce(
+    (total, item) => total + item.salePrice * item.quantity,
+    0
+  );
 
   return (
-    <div className='flex flex-wrap justify-center place-content-center h-full'>
-      <div className='w-full text-center mb-5'>
-        <h1 className='btn-primary max-w-[150px] mx-auto p-2 mb-5'>
-          Mi Carrito
-        </h1>
-        {error && <p className='text-red-500'>{error}</p>}
-        {loading && <p className='text-center text-gray-500'>Cargando...</p>}
+    <div className="flex flex-col items-center w-full" style={{ minHeight: "500px" }}>
+      <div className="w-full text-center mb-5">
+        <h1 className="btn-sixth max-w-[150px] mx-auto p-2 mb-5">Mi Carrito</h1>
       </div>
-
-      {isCartEmpty ? (
-        <p className='text-center w-full'>El carrito está vacío</p>
+      {cartItems.length === 0 ? (
+        <p className="text-center w-full">El carrito está vacío</p>
       ) : (
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4 w-full'>
-          {cartItems.content.map((item, index) => {
-            const price = item.price;
-            const quantity = quantityMap[item.productId] || item.quantity;
-            const totalPrice = (price * quantity).toFixed(2);
-
-            return (
-              <div key={index} className={`bg-fourty/50 rounded-md p-2 ${removedItems.has(item.productId) ? 'hidden' : ''}`}>
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full max-w-screen-lg px-2 sm:px-4">
+          {cartItems.map((item) => (
+            <div
+              key={item.id}
+              className="bg-fourth/50 p-4 flex flex-col items-center shadow rounded-lg"
+              style={{
+                width: "220px",
+                height: "320px",
+              }}
+            >
+              <div
+                className="w-full flex justify-center mb-2"
+                style={{
+                  height: "150px",
+                  display: "flex",
+                  alignItems: "center",
+                  overflow: "hidden",
+                }}
+              >
                 <img
-                  src={inventoryMap[item.productId] || 'placeholder-image.jpg'}
-                  alt={item.name || 'Producto'}
-                  className="w-full object-cover h-49"
+                  src={item.imageUrl}
+                  alt={item.name}
+                  className="rounded"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    objectFit: "cover",
+                  }}
                 />
-                <h1 className='font-bold mt-2'>{item.name || "Producto sin título"}</h1>
-                <p className="font-semibold">Precio: ${totalPrice}</p>
-                <p>Cantidad: {quantity}</p>
-                <div className='flex items-center space-x-2'>
+              </div>
+              <div
+                className="flex flex-col items-center text-center flex-grow"
+                style={{
+                  height: "100px",
+                }}
+              >
+                <h1
+                  className="font-bold text-xs sm:text-sm md:text-base"
+                  style={{
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {item.name}
+                </h1>
+                <p className="font-semibold text-xs sm:text-sm md:text-base">
+                  {`Precio: $${item.salePrice}`}
+                </p>
+                <div className="flex items-center">
                   <button
-                    onClick={() => handleQuantityChange(item, quantity - 1)}
-                    className='btn-primary'
-                    disabled={quantity <= 0}
+                    onClick={() => handleDecrement(item.id)}
+                    className="btn btn-sixth text-xs sm:text-sm px-2 mx-1"
                   >
-                    <FontAwesomeIcon icon={faMinus} />
+                    -
                   </button>
-                  <span>{quantity}</span>
+                  <p className="text-xs sm:text-sm md:text-base">
+                    {`Cantidad: ${item.quantity}`}
+                  </p>
                   <button
-                    onClick={() => handleQuantityChange(item, quantity + 1)}
-                    className='btn-primary'
+                    onClick={() => handleIncrement(item.id)}
+                    className="btn btn-sixth text-xs sm:text-sm px-2 mx-1"
                   >
-                    <FontAwesomeIcon icon={faPlus} />
-                  </button>
-                  <button
-                    onClick={() => handleRemoveItem(item)}
-                    className='btn-primary icon-'
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
+                    +
                   </button>
                 </div>
               </div>
-            );
-          })}
+              <div className="mt-auto w-full flex justify-between items-center">
+                <button
+                  onClick={() => handleRemoveItem(item.id)}
+                  className="btn btn-sixth p-2 text-xs sm:text-sm truncate"
+                  style={{ flex: "1", marginRight: "4px" }}
+                >
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
       )}
-
-      <div className={`bg-fourty/50 rounded-md p-2 flex items-center justify-center mt-5`}>
-        <button className='btn-primary font-bold mx-1 px-3 py-1'>
-          Pages
-        </button>
-        {Array.from({ length: totalPages }, (_, i) => i + 1).map((page, index) => (
+      {cartItems.length > 0 && (
+        <div className="text-center w-full mt-5">
+          <h2 className="font-bold text-lg">{`Total: $${totalPrice.toFixed(2)}`}</h2>
           <button
-            key={index}
-            onClick={() => handlePageChange(page)}
-            className={`mx-1 px-3 py-1 rounded btn-primary ${page === currentPage ? 'active' : ''}`}
+            onClick={handleClearCart}
+            className="btn btn-danger mt-3 p-2 text-sm"
           >
-            {page}
+            Vaciar carrito
           </button>
-        ))}
-      </div>
+        </div>
+      )}
     </div>
   );
 };

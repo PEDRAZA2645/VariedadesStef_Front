@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useContact from "../hooks/useContact"; // Asegúrate de que la ruta sea correcta
+import useContact from "../hooks/useContact";
 
 const Contact = () => {
   const {
@@ -12,17 +12,14 @@ const Contact = () => {
     successMessage,
     errorMessage,
   } = useContact();
-
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const dataToSend = { ...formData, status: 1 }; // Status siempre será 1
-
+    const dataToSend = { ...formData, status: 1 };
     try {
       await handleRegister(dataToSend);
-      navigate("/contacto"); // Redirige a la ruta /contacto después de enviar el formulario
+      navigate("/contacto");
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
       toast.error("Error al enviar el formulario. Inténtalo de nuevo.", {
@@ -30,7 +27,6 @@ const Contact = () => {
       });
     }
   };
-
   useEffect(() => {
     if (successMessage) {
       setShowSuccessMessage(true);
@@ -40,7 +36,6 @@ const Contact = () => {
       });
     }
   }, [successMessage]);
-
   return (
     <div>
       <ToastContainer />
@@ -50,7 +45,6 @@ const Contact = () => {
           className="w-auto max-w-md bg-sixth shadow-2xl rounded-sm p-6"
         >
           <div className="flex flex-col space-y-4">
-            {/* Campo Nombre */}
             <input
               type="text"
               name="name"
@@ -60,7 +54,6 @@ const Contact = () => {
               className="input-primary w-full h-[48px] px-3"
               required
             />
-            {/* Campo Apellido */}
             <input
               type="text"
               name="lastName"
@@ -70,7 +63,6 @@ const Contact = () => {
               className="input-primary w-full h-[48px] px-3"
               required
             />
-            {/* Campo Teléfono */}
             <input
               type="text"
               name="phone"
@@ -80,7 +72,6 @@ const Contact = () => {
               className="input-primary w-full h-[48px] px-3"
               required
             />
-            {/* Campo Email */}
             <input
               type="email"
               name="email"
@@ -90,7 +81,6 @@ const Contact = () => {
               className="input-primary w-full h-[48px] px-3"
               required
             />
-            {/* Campo Mensaje */}
             <textarea
               name="message"
               placeholder="Mensaje"
@@ -99,7 +89,6 @@ const Contact = () => {
               className="input-primary w-full h-[48px] px-3"
               required
             />
-            {/* Botón Enviar */}
             <button
               type="submit"
               className="w-[193px] h-[43px] md:w-[360px] md:h-[48px] btn-sixth"
@@ -107,7 +96,6 @@ const Contact = () => {
               Enviar
             </button>
           </div>
-          {/* Mensajes de error o de éxito */}
           {errorMessage && <div className="text-red-500 mt-4">{errorMessage}</div>}
           {showSuccessMessage && (
             <div className="text-green-500 mt-4">
@@ -119,5 +107,4 @@ const Contact = () => {
     </div>
   );
 };
-
 export default Contact;

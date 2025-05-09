@@ -6,7 +6,7 @@ export default {
   ],
   theme: {
     fontFamily: {
-      custom: ["Victor Mono", "monospace"], // Type
+      custom: ["Victor Mono", "monospace"], 
     },
     fontStyle:{
       custom: "italic",
@@ -29,7 +29,6 @@ export default {
     screens: {
       sm: '375px',
       md: '768px',
-      //lg: '960px', esta la podria necesitar mas adelante
       lg: '1440px',
       xl: '1669px'
      

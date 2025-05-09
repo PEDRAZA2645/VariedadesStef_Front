@@ -1,55 +1,67 @@
 import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';  // Importar useNavigate
-import useAuth  from '../hooks/useAuth'; // Importar el hook useAuth
 
 const useCart = () => {
     const [cartItems, setCartItems] = useState([]);
     const [error, setError] = useState(null);
-    const { isAuthenticated, userData  } = useAuth(); // Obtener el estado de autenticación
-    const navigate = useNavigate(); // Navegar al login si no está autenticado
 
-    // Método para agregar un producto al carrito
-    const addToCart = async ({ cartId, inventoryId, quantity }) => {
-        if (!isAuthenticated) {
-            // Si no está autenticado, redirigir al login
-            navigate('/login');
-            return;
-        }
-
+    const addToCart = (product) => {
         try {
-            // Codificación en Base64 del payload
-            const payload = {
-                cartId,
-                inventoryId,
-                quantity,
-                userId: userData.userId,    // Usar userId de los datos decodificados
-                createUser: userData.createUser,
-            };
-            const base64Payload = btoa(JSON.stringify(payload));
-
-            // Solicitud POST a través de Axios con el payload codificado en Base64
-            const response = await axios.post('http://localhost:8082/carts/addToCart', base64Payload, {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+            setCartItems((prevItems) => {
+                const existingItem = prevItems.find((item) => item.id === product.id);
+                if (existingItem) {
+                    return prevItems.map((item) =>
+                        item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+                    );
+                }
+                return [...prevItems, { ...product, quantity: 1 }];
             });
-
-            // Decodificación de la respuesta en Base64
-            const base64Data = response.data;
-            const jsonString = atob(base64Data);
-            const data = JSON.parse(jsonString);
-
-            setCartItems(data.cartItems); // Actualiza el estado del carrito con los datos decodificados
         } catch (error) {
-            console.error('Error en addToCart:', error);
+            console.error('Error al agregar al carrito:', error);
             setError('Error al agregar el producto al carrito');
+        }
+    };
+
+    const removeFromCart = (productId) => {
+        try {
+            setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
+        } catch (error) {
+            console.error('Error al eliminar del carrito:', error);
+            setError('Error al eliminar el producto del carrito');
+        }
+    };
+
+    const updateItemQuantity = (productId, quantity) => {
+        try {
+            if (quantity <= 0) {
+                removeFromCart(productId);
+            } else {
+                setCartItems((prevItems) =>
+                    prevItems.map((item) =>
+                        item.id === productId ? { ...item, quantity } : item
+                    )
+                );
+            }
+        } catch (error) {
+            console.error('Error al actualizar la cantidad del producto:', error);
+            setError('Error al actualizar la cantidad del producto');
+        }
+    };
+
+    const clearCart = () => {
+        try {
+            setCartItems([]);
+        } catch (error) {
+            console.error('Error al limpiar el carrito:', error);
+            setError('Error al limpiar el carrito');
         }
     };
 
     return {
         cartItems,
         addToCart,
+        removeFromCart,
+        updateItemQuantity,
+        clearCart,
         error,
     };
 };

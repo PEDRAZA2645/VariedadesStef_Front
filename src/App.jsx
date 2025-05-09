@@ -7,34 +7,22 @@ import Dashboard from "./pages/Dashboard";
 import Orders from "./pages/cart/Orders";
 import Products from "./pages/services/Products";
 import Contact from "./components/Contact";
-import ProductDetails from "./pages/services/ProductDetails";
 import ChangePassword from "./pages/auth/ChangePassword";
 import Cart from "./pages/cart/Cart";
-import useAuthInitializer from "./hooks/useAuthInitializer";
-import PrivateRoute from './components/routes/PrivateRoute';
 import WhoAreWe from './components/WhoAreWe';
 
 
 function App() {
-  useAuthInitializer();
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<Root />}>
-        {/* Rutas que no requieren autenticación */}
         <Route index element={<Dashboard />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/productDetails/:id" element={<ProductDetails />} />
         <Route path="/contacto" element={<Contact />} />
         <Route path="/quienes-somos" element={<WhoAreWe />} />
-
-        {/* Rutas que requieren autenticación */}
-        <Route element={<PrivateRoute />}>
-          <Route path="/orders" element={<Orders />} />
-          <Route path="/cart" element={<Cart />} />
-        </Route>
-
-        {/* Rutas de autenticación */}
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/orders" element={<Orders />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/reset-Password" element={<ChangePassword />} />
@@ -42,16 +30,13 @@ function App() {
       </Route>
     )
   );
-
   return (
     <div className="App flex flex-col min-h-screen">
       <RouterProvider router={router} />
     </div>
   );
 }
-
 export default App; 
-
 const Root = () => {
   return (
     <>

@@ -1,23 +1,16 @@
 const WhoAreWe = () => {
     return (
       <div className="flex flex-col justify-center items-center bg-gray-100 w-full min-h-[430px] flex-grow px-6 py-8">
-        {/* Título principal */}
         <h1 className="text-2xl md:text-4xl font-bold text-center text-gray-800 mb-6">
           Bienvenidos a VariedadesStef: Tu Ritual de Belleza
         </h1>
-  
-        {/* Descripción */}
         <p className="text-sm md:text-lg text-justify text-gray-600 max-w-3xl leading-relaxed">
           <strong>¿Quiénes somos?</strong> En <strong>VariedadesStef</strong>, somos tu mejor aliado en el mundo del
           <strong> cuidado capilar profesional</strong> y el <strong>autocuidado personal</strong>. Más que una tienda, somos un espacio donde la <strong>innovación en productos de belleza</strong> y el <strong>cuidado del cabello</strong> se unen para ofrecerte <strong>resultados visibles</strong> y una experiencia transformadora.
         </p>
-  
-        {/* Misión */}
         <p className="text-sm md:text-lg text-justify text-gray-600 max-w-3xl leading-relaxed mt-4">
           <strong>Nuestra misión:</strong> Convertir tu rutina diaria en un <strong>ritual de belleza único y especial</strong>, porque en VariedadesStef creemos que el <strong>autocuidado</strong> no es un lujo, sino una forma de vida.
         </p>
-  
-        {/* Diferenciadores */}
         <div className="text-sm md:text-lg text-justify text-gray-600 max-w-3xl leading-relaxed mt-6 space-y-4">
           <p><strong>¿Qué nos hace diferentes?</strong></p>
           <ul className="list-disc list-inside">
@@ -32,8 +25,6 @@ const WhoAreWe = () => {
             </li>
           </ul>
         </div>
-  
-        {/* Cierre y CTA */}
         <p className="text-sm md:text-lg text-justify text-gray-600 max-w-3xl leading-relaxed mt-6">
           En <strong>VariedadesStef</strong>, te ayudamos a descubrir el poder de los <strong>productos de belleza innovadores</strong> diseñados para resaltar tu esencia, cuidando cada detalle de tu cabello y tu piel.
         </p>
@@ -42,8 +33,6 @@ const WhoAreWe = () => {
           <p>🌟 <strong>Visítanos hoy</strong> y transforma tu rutina en un ritual de autocuidado.</p>
           <p>🌟 <strong>Descubre los secretos del cabello sano y radiante</strong> con nuestros productos exclusivos.</p>
         </div>
-  
-        {/* ¿Por qué elegirnos? */}
         <div className="text-sm md:text-lg text-justify text-gray-600 max-w-3xl leading-relaxed mt-8 space-y-4">
           <p><strong>¿Por qué elegirnos?</strong></p>
           <ul className="list-disc list-inside">

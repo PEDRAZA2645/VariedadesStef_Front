@@ -10,7 +10,6 @@ import WhatsApp from "../assets/WhatsApp.svg";
 const Footer = () => {
   return (
     <footer className="footer bg-sixth w-full h-auto flex flex-col md:flex-row justify-between items-center text-sm md:text-base text-black p-8 gap-6 mt-5">
-      {/* Logo y ubicación */}
       <div className="flex flex-col md:flex-row items-center gap-6">
         <div className="w-25 h-20 rounded-lg overflow-hidden bg-gray-200 flex items-center justify-center">
           <img src={logo} alt="Logo" className="w-full h-full object-cover" />
@@ -22,8 +21,6 @@ const Footer = () => {
           </ol>
         </div>
       </div>
-
-      {/* Redes sociales */}
       <div className="flex flex-col items-center md:items-start gap-6">
         <h1 className="uppercase font-bold">Redes Sociales</h1>
         <ol className="flex gap-6">
@@ -54,8 +51,6 @@ const Footer = () => {
           </li>
         </ol>
       </div>
-
-      {/* Acciones */}
       <div className="text-center md:text-left">
         <h1 className="mb-4 uppercase font-bold text-lg">¿Qué quieres hacer?</h1>
         <Link to="/products" className="btn-fifth mb-4 py-2 px-4 bg-blue-500 text-white rounded-lg">

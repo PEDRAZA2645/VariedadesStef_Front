@@ -1,23 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchProducts, setCurrentPage } from "../../redux/productSlice"; // Ajusta la ruta según tu estructura
+import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import useCart from "../../hooks/useCart";
 
 const Products = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { addToCart } = useCart();
 
-  // Estado global de Redux
-  const { products, error, totalPages, currentPage, loading } = useSelector(
-    (state) => state.products
-  );
-
-  const [selectedSizes, setSelectedSizes] = useState({});
+  const { products, error, loading } = useSelector((state) => state.products);
 
   useEffect(() => {
     if (location.state?.showSuccess) {
@@ -29,55 +22,18 @@ const Products = () => {
     }
   }, [location.state, navigate, location.pathname]);
 
-  useEffect(() => {
-    // Cargar productos al cambiar de página
-    dispatch(fetchProducts(currentPage));
-  }, [dispatch, currentPage]);
-
-  const handleSizeChange = (serviceId, reference) => {
-    setSelectedSizes((prev) => ({
-      ...prev,
-      [serviceId]: reference,
-    }));
-  };
-
-  const handleAddToCart = (service) => {
-    const selectedReference = selectedSizes[service.id];
-    if (!selectedReference) {
-      alert("Por favor, selecciona una talla antes de agregar al carrito.");
-      return;
-    }
-
-    const selectedProduct = service.derivedProducts.find(
-      (product) => product.reference === selectedReference
-    );
-
-    if (!selectedProduct) {
-      alert("Producto derivado no encontrado.");
-      return;
-    }
-
-    const productToCart = {
-      ...service,
-      inventoryId: selectedProduct.id,
-      selectedReference,
-    };
-
-    addToCart(productToCart);
-    toast.success("Product added to the cart successfully!", {
+  const handleAddToCart = (product) => {
+    addToCart(product);
+    toast.success("Producto agregado al carrito correctamente!", {
       position: "top-center",
       autoClose: 3000,
     });
   };
 
-  const handlePageChange = (newPage) => {
-    dispatch(setCurrentPage(newPage));
-  };
-
   return (
     <div
       className="flex flex-col items-center w-full"
-      style={{ minHeight: "500px" }} // Altura mínima de 1000px
+      style={{ minHeight: "500px" }}
     >
       <ToastContainer />
       {loading ? (
@@ -86,83 +42,67 @@ const Products = () => {
         <p className="text-red-500">{error}</p>
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 w-full max-w-screen-lg px-2 sm:px-4">
-          {products.map((service) => (
+          {products.map((product) => (
             <div
-              key={service.id}
-              className="bg-fourty/50 p-4 flex flex-col items-center shadow rounded-lg"
+              key={product.id}
+              className="bg-fourth/50 p-4 flex flex-col items-center shadow rounded-lg"
+              style={{
+                width: "220px",
+                height: "320px", 
+              }}
             >
-              <img
-                src={service.imageUrl}
-                alt={service.name}
-                className="w-full h-49 object-cover mb-4 rounded"
-              />
-              <h1 className="font-bold text-center text-sm sm:text-base md:text-lg">
-                {service.name}
-              </h1>
-              <p className="font-semibold text-center text-xs sm:text-sm md:text-base">
-                {service.categoryId === 3
-                  ? "Precio: Ver en Carrito"
-                  : `Precio: $${service.salePrice ? service.salePrice : "No disponible"}`}
-              </p>
-              <div className="w-full mt-2">
-                <label
-                  htmlFor={`size-select-${service.id}`}
-                  className="block font-medium mb-1 text-xs sm:text-sm"
-                >
-                  {service.categoryId === 3
-                    ? "Seleccionar Almacenamiento:"
-                    : "Seleccionar talla:"}
-                </label>
-                <select
-                  id={`size-select-${service.id}`}
-                  className="w-full p-2 border rounded text-xs sm:text-sm"
-                  value={selectedSizes[service.id] || ""}
-                  onChange={(e) => handleSizeChange(service.id, e.target.value)}
-                >
-                  <option value="">Selecciona una opción</option>
-                  {service.derivedProducts &&
-                  service.derivedProducts.length > 0 ? (
-                    service.derivedProducts.map((derivative) => (
-                      <option key={derivative.id} value={derivative.reference}>
-                        {derivative.reference}
-                      </option>
-                    ))
-                  ) : (
-                    <option value="" disabled>
-                      No hay disponibles
-                    </option>
-                  )}
-                </select>
+              <div
+                className="w-full flex justify-center mb-2"
+                style={{
+                  height: "150px",
+                  display: "flex",
+                  alignItems: "center",
+                  overflow: "hidden",
+                }}
+              >
+                <img
+                  src={product.imageUrl}
+                  alt={product.name}
+                  className="rounded"
+                  style={{
+                    maxWidth: "100%",
+                    maxHeight: "100%",
+                    objectFit: "cover",
+                  }}
+                />
               </div>
-              <div className="mt-4 w-full">
+              <div
+                className="flex flex-col items-center text-center flex-grow"
+                style={{
+                  height: "100px",
+                }}
+              >
+                <h1
+                  className="font-bold text-xs sm:text-sm md:text-base"
+                  style={{
+                    fontSize: "0.9rem",
+                  }}
+                >
+                  {product.name}
+                </h1>
+                <p className="font-semibold text-xs sm:text-sm md:text-base">
+                  {`Precio: $${product.salePrice}`}
+                </p>
+              </div>
+              <div
+                className="mt-auto w-full"
+                style={{
+                  position: "relative",
+                }}
+              >
                 <button
-                  className="btn btn-primary p-2 w-full text-xs sm:text-sm truncate"
-                  onClick={() => handleAddToCart(service)}
+                  className="btn btn-sixth p-2 w-full text-xs sm:text-sm truncate"
+                  onClick={() => handleAddToCart(product)}
                 >
                   Agregar al carrito
                 </button>
               </div>
             </div>
-          ))}
-        </div>
-      )}
-
-      {/* Paginación */}
-      {totalPages > 0 && (
-        <div
-          className={`bg-fourty/80 rounded-md p-2 flex items-center justify-center mt-5`}
-        >
-          <button className="btn-fourth font-bold mx-1 px-3 py-1">Pages</button>
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              onClick={() => handlePageChange(page)}
-              className={`mx-1 px-3 py-1 rounded btn-fourth ${
-                page === currentPage ? "active" : ""
-              }`}
-            >
-              {page}
-            </button>
           ))}
         </div>
       )}

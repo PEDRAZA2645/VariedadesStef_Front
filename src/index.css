@@ -46,16 +46,14 @@
     }
     
     .icon-black {
-        color: black !important; /* Asegura que este estilo prevalezca */
+        color: black !important;
       }
     
       .icon-red {
-        color: #ef4444 !important; /* Usa Tailwind o un color personalizado */
+        color: #ef4444 !important;
       }
       
 }
-
-/* css puro */
 
 .anyBox{
     display: grid;    
