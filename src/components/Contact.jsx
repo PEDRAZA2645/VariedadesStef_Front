@@ -1,44 +1,16 @@
-import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import useContact from "../hooks/useContact";
 
 const Contact = () => {
-  const {
-    formData,
-    handleInputChange,
-    handleRegister,
-    successMessage,
-    errorMessage,
-  } = useContact();
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const navigate = useNavigate();
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = (e) => {
     e.preventDefault();
-    const dataToSend = { ...formData, status: 1 };
-    try {
-      await handleRegister(dataToSend);
-      navigate("/contacto");
-    } catch (error) {
-      console.error("Error al enviar el formulario:", error);
-      toast.error("Error al enviar el formulario. Inténtalo de nuevo.", {
-        position: "top-center",
-      });
-    }
+    navigate("/products");
   };
-  useEffect(() => {
-    if (successMessage) {
-      setShowSuccessMessage(true);
-      toast.success("Formulario enviado con éxito!", {
-        position: "top-center",
-        autoClose: 3000,
-      });
-    }
-  }, [successMessage]);
+
   return (
     <div>
-      <ToastContainer />
       <div className="flex justify-center items-center h-[430px] bg-gray-100">
         <form
           onSubmit={handleSubmit}
@@ -49,8 +21,6 @@ const Contact = () => {
               type="text"
               name="name"
               placeholder="Nombre"
-              value={formData.name}
-              onChange={handleInputChange}
               className="input-primary w-full h-[48px] px-3"
               required
             />
@@ -58,8 +28,6 @@ const Contact = () => {
               type="text"
               name="lastName"
               placeholder="Apellido"
-              value={formData.lastName}
-              onChange={handleInputChange}
               className="input-primary w-full h-[48px] px-3"
               required
             />
@@ -67,8 +35,6 @@ const Contact = () => {
               type="text"
               name="phone"
               placeholder="Teléfono"
-              value={formData.phone}
-              onChange={handleInputChange}
               className="input-primary w-full h-[48px] px-3"
               required
             />
@@ -76,17 +42,13 @@ const Contact = () => {
               type="email"
               name="email"
               placeholder="Email"
-              value={formData.email}
-              onChange={handleInputChange}
               className="input-primary w-full h-[48px] px-3"
               required
             />
             <textarea
               name="message"
               placeholder="Mensaje"
-              value={formData.message}
-              onChange={handleInputChange}
-              className="input-primary w-full h-[48px] px-3"
+              className="input-primary w-full h-[100px] px-3"
               required
             />
             <button
@@ -96,15 +58,10 @@ const Contact = () => {
               Enviar
             </button>
           </div>
-          {errorMessage && <div className="text-red-500 mt-4">{errorMessage}</div>}
-          {showSuccessMessage && (
-            <div className="text-green-500 mt-4">
-              Formulario enviado con éxito!
-            </div>
-          )}
         </form>
       </div>
     </div>
   );
 };
+
 export default Contact;

@@ -1,12 +1,22 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/products");
+  };
   return (
     <div>
       <ToastContainer />
       <div className="flex justify-center items-center h-[500px] bg-gray-100">
-        <form className="w-auto max-w-md bg-sixth shadow-2xl rounded-sm p-6">
+        <form
+          onSubmit={handleSubmit}
+          className="w-auto max-w-md bg-sixth shadow-2xl rounded-sm p-6"
+        >
           <div className="flex flex-col space-y-4">
             <input
               type="text"
